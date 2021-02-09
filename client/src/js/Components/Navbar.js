@@ -17,17 +17,7 @@ const Navbar = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  return (
-    <div class="ui secondary  menu">
-      <a class="active item">Home</a>
-      <a class="item">Playlists</a>
-      <a class="item">Friends</a>
-      <div class="right menu">
-        <div class="item"></div>
-        <a class="ui item">Logout</a>
-      </div>
-    </div>
-  );
+  return <div>test</div>;
 };
 
 export default Navbar;
