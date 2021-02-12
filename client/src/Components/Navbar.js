@@ -7,34 +7,18 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
+    display: "flex",
+    justifyContent: "space-between",
     flexGrow: 1,
   },
 }));
 
 export const NavBar = () => {
   const classes = useStyles();
-  const [avatar, setAvatar] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [user, setUser] = useState("");
 
   let parsed = queryString.parse(window.location.search);
   let accessToken = parsed.access_token;
@@ -45,48 +29,47 @@ export const NavBar = () => {
     })
       .then((response) => response.json())
       // .then((data) => console.log(data))
-      .then((data) => setAvatar(data.images[0].url))
+      .then((data) => setUser(data.images[0].url))
       .catch((error) => console.log(error));
   }, []);
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    // create logout call to backend
+    window.location.href = "http://localhost:8888/login";
+  };
+
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          {accessToken ? (
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <Avatar alt="User Avatar" src={`${avatar}`} />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-              </Menu>
-            </div>
-          ) : (
-            <Button>Login</Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+    <AppBar position="static">
+      <Toolbar>
+        {user ? (
+          <div className={classes.root}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              // return home onclick
+              color="inherit"
+            >
+              <Avatar alt="User Avatar" src={`${user}`} />
+            </IconButton>
+
+            <Button color="inherit" onClick={(e) => handleLogout(e)}>
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <Button
+            color="inherit"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "http://localhost:8888/login";
+            }}
+          >
+            Login
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
