@@ -165,6 +165,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  container: {
+    display: "flex",
+    flexFlow: "row wrap",
+  },
 }));
 
 function getSteps() {
@@ -214,50 +218,46 @@ export default function CustomStepper() {
           </Step>
         ))}
       </Stepper>
-      <div>
-        {activeStep === 0 && (
-          <div>
-            {topArtists.map((artist) => {
-              return (
-                <TopArtistCard
-                  image={artist.images[1].url}
-                  name={artist.name}
-                />
-              );
-            })}
-          </div>
-        )}
 
-        {activeStep === steps.length ? (
+      {activeStep === 0 && (
+        <div className={classes.container}>
+          {topArtists.map((artist) => {
+            return (
+              <TopArtistCard image={artist.images[0].url} name={artist.name} />
+            );
+          })}
+        </div>
+      )}
+
+      {activeStep === steps.length ? (
+        <div>
+          <Typography className={classes.instructions}></Typography>
+          <Button onClick={handleReset} className={classes.button}>
+            Reset
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <Typography className={classes.instructions}></Typography>
           <div>
-            <Typography className={classes.instructions}></Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.button}
+            >
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              className={classes.button}
+            >
+              {activeStep === steps.length - 1 ? "Save" : "Next"}
             </Button>
           </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}></Typography>
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Save" : "Next"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
