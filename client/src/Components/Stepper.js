@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import queryString from "query-string";
+
 import PropTypes from "prop-types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -12,6 +14,8 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+
+import TopArtistCard from "./Card";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -169,8 +173,21 @@ function getSteps() {
 
 export default function CustomStepper() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [topArtists, setTopArtists] = useState([]);
   const steps = getSteps();
+
+  let parsed = queryString.parse(window.location.search);
+  let accessToken = parsed.access_token;
+
+  useEffect(() => {
+    fetch("https://api.spotify.com/v1/me/top/artists", {
+      headers: { Authorization: "Bearer " + accessToken },
+    })
+      .then((response) => response.json())
+      .then((data) => setTopArtists(data.items))
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -200,9 +217,17 @@ export default function CustomStepper() {
       <div>
         {activeStep === 0 && (
           <div>
-            <h1>TESTING</h1>
+            {topArtists.map((artist) => {
+              return (
+                <TopArtistCard
+                  image={artist.images[1].url}
+                  name={artist.name}
+                />
+              );
+            })}
           </div>
         )}
+
         {activeStep === steps.length ? (
           <div>
             <Typography className={classes.instructions}></Typography>
