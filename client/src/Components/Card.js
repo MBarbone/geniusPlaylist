@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: 345,
     margin: "0 20px 20px 20px",
+    "&:hover": {
+      border: "5px solid red",
+    },
   },
   media: {
     height: 0,
@@ -17,12 +20,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const useToggle = (initialState) => {
+  const [isToggled, setIsToggled] = useState(initialState);
+
+  // put [setIsToggled] into the useCallback's dependencies array
+  // this value never changes so the callback is not going to be ever re-created
+  const toggle = useCallback(() => setIsToggled((state) => !state), [
+    setIsToggled,
+  ]);
+
+  return [isToggled, toggle];
+};
 export default function TopArtistCard(props) {
   const classes = useStyles();
-  const [selected, isSelected] = useState(false);
+  const [isToggled, toggle] = useToggle(false);
+
+  const onClick = (e) => {
+    toggle();
+    console.log(e.currentTarget.id, isToggled);
+  };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={toggle} id={props.id}>
       <CardMedia
         className={classes.media}
         image={props.image}

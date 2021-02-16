@@ -14,6 +14,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
 
@@ -223,7 +224,14 @@ export default function CustomStepper() {
         <div className={classes.container}>
           {topArtists.map((artist) => {
             return (
-              <TopArtistCard image={artist.images[0].url} name={artist.name} />
+              <Container maxWidth="xs" key={artist.id}>
+                <TopArtistCard
+                  key={artist.id}
+                  image={artist.images[0].url}
+                  name={artist.name}
+                  id={artist.id}
+                />
+              </Container>
             );
           })}
         </div>
