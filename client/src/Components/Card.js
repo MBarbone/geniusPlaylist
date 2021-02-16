@@ -3,20 +3,29 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import clsx from "clsx";
 
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 345,
-    margin: "0 20px 20px 20px",
+    margin: "0 25px 45px 25px",
     "&:hover": {
-      border: "5px solid red",
+      transition: "all 0.2s ease-out",
+      boxShadow: "0px 6px 10px rgba(50, 50, 50, 0.8)",
+      top: "-4px",
+      cursor: "pointer",
     },
   },
   media: {
     height: 0,
     paddingTop: "70%",
+  },
+  isToggled: {
+    top: "-4px",
+    border: "4px solid green",
+    cursor: "pointer",
   },
 }));
 
@@ -34,14 +43,13 @@ const useToggle = (initialState) => {
 export default function TopArtistCard(props) {
   const classes = useStyles();
   const [isToggled, toggle] = useToggle(false);
-
-  const onClick = (e) => {
-    toggle();
-    console.log(e.currentTarget.id, isToggled);
-  };
+  const cardStyles = clsx({
+    [classes.root]: true,
+    [classes.isToggled]: isToggled,
+  });
 
   return (
-    <Card className={classes.root} onClick={toggle} id={props.id}>
+    <Card className={cardStyles} onClick={toggle} id={props.id}>
       <CardMedia
         className={classes.media}
         image={props.image}

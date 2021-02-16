@@ -169,6 +169,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexFlow: "row wrap",
+    padding: "0 30px",
   },
 }));
 
