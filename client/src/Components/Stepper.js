@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
+import Player from "./Player";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -158,6 +159,7 @@ ColorlibStepIcon.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    padding: "0 0 30px 0",
   },
   button: {
     marginRight: theme.spacing(1),
@@ -180,20 +182,11 @@ function getSteps() {
 export default function CustomStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [topArtists, setTopArtists] = useState([]);
+
   const steps = getSteps();
 
   let parsed = queryString.parse(window.location.search);
   let accessToken = parsed.access_token;
-
-  useEffect(() => {
-    fetch("https://api.spotify.com/v1/me/top/artists", {
-      headers: { Authorization: "Bearer " + accessToken },
-    })
-      .then((response) => response.json())
-      .then((data) => setTopArtists(data.items))
-      .catch((error) => console.log(error));
-  }, []);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -206,6 +199,82 @@ export default function CustomStepper() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const GetTopArtists = () => {
+    const [topArtists, setTopArtists] = useState([]);
+    useEffect(() => {
+      fetch("https://api.spotify.com/v1/me/top/artists", {
+        headers: { Authorization: "Bearer " + accessToken },
+      })
+        .then((response) => response.json())
+        .then((data) => setTopArtists(data.items))
+        .catch((error) => console.log(error));
+    }, []);
+
+    return (
+      <div className={classes.container}>
+        {topArtists.map((artist) => {
+          return (
+            <Container maxWidth="xs" key={artist.id}>
+              <TopArtistCard
+                key={artist.id}
+                image={artist.images[0].url}
+                name={artist.name}
+                id={artist.id}
+              />
+            </Container>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const GetSuggestedMusic = () => {
+    const [suggestedMusic, setSuggestedMusic] = useState([]);
+    console.log("made it here");
+    useEffect(() => {
+      fetch(
+        "https://api.spotify.com/v1/recommendations?limit=2&seed_genres=rock",
+        {
+          headers: { Authorization: "Bearer " + accessToken },
+        }
+      )
+        .then((response) => response.json())
+        // .then((data) => console.log(data.tracks))
+        .then((data) => setSuggestedMusic(data.tracks))
+        .catch((error) => console.log(error));
+    }, []);
+
+    return (
+      <div className={classes.container}>
+        {suggestedMusic.map((track) => {
+          return (
+            <div className={classes.container}>
+              <Container maxWidth="xs">
+                <Player
+                  albumCover={track.album.images[0].url}
+                  albumName={track.album.name}
+                  artist={track.artists[0].name}
+                  song={track.name}
+                />
+              </Container>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  //   const stepperFunctions = (activeStep) => {
+  //     switch (activeStep) {
+  //       case 0:
+  //         GetTopArtists();
+  //         break;
+  //       case 1:
+  //         GetSuggestedMusic();
+  //         break;
+  //     }
+  //   };
 
   return (
     <div className={classes.root}>
@@ -221,22 +290,10 @@ export default function CustomStepper() {
         ))}
       </Stepper>
 
-      {activeStep === 0 && (
-        <div className={classes.container}>
-          {topArtists.map((artist) => {
-            return (
-              <Container maxWidth="xs" key={artist.id}>
-                <TopArtistCard
-                  key={artist.id}
-                  image={artist.images[0].url}
-                  name={artist.name}
-                  id={artist.id}
-                />
-              </Container>
-            );
-          })}
-        </div>
-      )}
+      {/* {stepperFunctions()} */}
+
+      {/* {activeStep === 0 && GetTopArtists()} */}
+      {activeStep === 1 && GetSuggestedMusic()}
 
       {activeStep === steps.length ? (
         <div>
