@@ -175,15 +175,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getSteps() {
-  return ["Select artists", "Discover new music", "Save your playlist"];
-}
-
 export default function CustomStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-
-  const steps = getSteps();
 
   let parsed = queryString.parse(window.location.search);
   let accessToken = parsed.access_token;
@@ -265,16 +259,15 @@ export default function CustomStepper() {
     );
   };
 
-  //   const stepperFunctions = (activeStep) => {
-  //     switch (activeStep) {
-  //       case 0:
-  //         GetTopArtists();
-  //         break;
-  //       case 1:
-  //         GetSuggestedMusic();
-  //         break;
-  //     }
-  //   };
+  const getSteps = () => {
+    return [
+      { instruction: "Select artists", function: GetTopArtists() },
+      { instruction: "Discover new music", function: GetSuggestedMusic() },
+      { instruction: "Save your playlist" },
+    ];
+  };
+
+  const steps = getSteps();
 
   return (
     <div className={classes.root}>
@@ -283,17 +276,18 @@ export default function CustomStepper() {
         activeStep={activeStep}
         connector={<ColorlibConnector />}
       >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+        {steps.map((step) => (
+          <Step key={step}>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>
+              {step.instruction}
+            </StepLabel>
           </Step>
         ))}
       </Stepper>
 
-      {/* {stepperFunctions()} */}
-
-      {/* {activeStep === 0 && GetTopArtists()} */}
-      {activeStep === 1 && GetSuggestedMusic()}
+      {steps.map((step) =>
+        steps.indexOf(step) === activeStep ? <div>{step.function}</div> : null
+      )}
 
       {activeStep === steps.length ? (
         <div>
