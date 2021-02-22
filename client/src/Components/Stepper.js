@@ -17,7 +17,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
-import Player from "./Player";
+// import Player from "./Player";
+import { AlbumCarousel } from "./AlbumCarousel";
+import { Audio } from "./Audio";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -172,6 +174,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexFlow: "row wrap",
     padding: "0 30px",
+    justifyContent: "center",
   },
 }));
 
@@ -225,23 +228,21 @@ export default function CustomStepper() {
 
   const GetSuggestedMusic = () => {
     const [suggestedMusic, setSuggestedMusic] = useState([]);
-    console.log("made it here");
     useEffect(() => {
       fetch(
-        "https://api.spotify.com/v1/recommendations?limit=2&seed_genres=rock",
+        "https://api.spotify.com/v1/recommendations?limit=16&seed_genres=rock",
         {
           headers: { Authorization: "Bearer " + accessToken },
         }
       )
         .then((response) => response.json())
-        // .then((data) => console.log(data.tracks))
         .then((data) => setSuggestedMusic(data.tracks))
         .catch((error) => console.log(error));
     }, []);
 
     return (
       <div className={classes.container}>
-        {suggestedMusic.map((track) => {
+        {/* {suggestedMusic.map((track) => {
           return (
             <div className={classes.container}>
               <Container maxWidth="xs">
@@ -254,7 +255,10 @@ export default function CustomStepper() {
               </Container>
             </div>
           );
-        })}
+        })} */}
+        {console.log(suggestedMusic)}
+        <AlbumCarousel suggestedMusic={suggestedMusic} />
+        <Audio suggestedMusic={suggestedMusic} />
       </div>
     );
   };
