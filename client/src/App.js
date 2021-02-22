@@ -1,13 +1,14 @@
 import "./App.css";
 import React from "react";
 
-import { NavBar } from "./Components/Navbar.js";
+import { NavBar } from "./Components/Navbar";
+import CustomStepper from "./Components/Stepper";
 
 const App = () => {
   return (
     <div className="App">
       <NavBar />
-      <div>Test Content</div>
+      <CustomStepper />
     </div>
   );
 };
