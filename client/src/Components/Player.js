@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     position: "absolute",
-    margin: "5px",
+    marginTop: "50px",
     width: "450px",
     height: "auto",
   },
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   content: {
-    flex: "1 0 auto",
+    width: "200px",
   },
   cover: {
     width: "inherit",
@@ -30,9 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   controls: {
     display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    alignSelf: "center",
   },
   playIcon: {
     height: 38,

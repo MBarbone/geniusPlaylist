@@ -14,11 +14,9 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
 import Player from "./Player";
-import { CardButtons } from "./coverFlow/CardButtons";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -247,13 +245,8 @@ export default function CustomStepper() {
     }, []);
 
     return (
-      <div>
-        <div className={classes.container}>
-          <Player suggestedMusic={suggestedMusic} />
-        </div>
-        <div>
-          <CardButtons />
-        </div>
+      <div className={classes.container} style={{ height: "350px" }}>
+        <Player suggestedMusic={suggestedMusic} />
       </div>
     );
   };
