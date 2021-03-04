@@ -5,15 +5,15 @@ export const Audio = (props) => {
     <div>
       {props.suggestedMusic.map((item) => {
         return (
-          item.preview_url && (
-            <figure>
-              <figcaption>Listen to the T-Rex:</figcaption>
-              <audio controls src={item.preview_url}>
-                Your browser does not support the
-                <code>audio</code> element.
-              </audio>
-            </figure>
-          )
+          <figure>
+            <figcaption>
+              {item.artists[0].name}- {item.name}
+            </figcaption>
+            <audio controls src={item.preview_url}>
+              Your browser does not support the
+              <code>audio</code> element.
+            </audio>
+          </figure>
         );
       })}
     </div>

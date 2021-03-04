@@ -12,6 +12,10 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    position: "absolute",
+    margin: "5px",
+    width: "450px",
+    height: "auto",
   },
   details: {
     display: "flex",
@@ -21,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   cover: {
-    width: 151,
+    width: "inherit",
+    minHeight: "226px",
   },
   controls: {
     display: "flex",
@@ -35,46 +40,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Player(props) {
+export default function Player({ suggestedMusic }) {
   const classes = useStyles();
   const theme = useTheme();
+  console.log("suggestedMusic", suggestedMusic);
 
-  return (
-    <Card className={classes.root}>
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            {props.song}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {props.artist}
-          </Typography>
-        </CardContent>
-        <div className={classes.controls}>
-          <IconButton aria-label="previous">
-            {theme.direction === "rtl" ? (
-              <SkipNextIcon />
-            ) : (
-              <SkipPreviousIcon />
-            )}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classes.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === "rtl" ? (
-              <SkipPreviousIcon />
-            ) : (
-              <SkipNextIcon />
-            )}
-          </IconButton>
+  return suggestedMusic.map((song) => {
+    console.log(song);
+    return (
+      <Card className={classes.root}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography component="h5" variant="h5">
+              {song.name}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {song.artists[0].name}
+            </Typography>
+          </CardContent>
+          <div className={classes.controls}>
+            <IconButton aria-label="previous">
+              {theme.direction === "rtl" ? (
+                <SkipNextIcon />
+              ) : (
+                <SkipPreviousIcon />
+              )}
+            </IconButton>
+            <IconButton aria-label="play/pause">
+              <PlayArrowIcon className={classes.playIcon} />
+            </IconButton>
+            <IconButton aria-label="next">
+              {theme.direction === "rtl" ? (
+                <SkipPreviousIcon />
+              ) : (
+                <SkipNextIcon />
+              )}
+            </IconButton>
+          </div>
         </div>
-      </div>
-      <CardMedia
-        className={classes.cover}
-        image={props.albumCover}
-        title={`${props.albumName} album cover`}
-      />
-    </Card>
-  );
+        <CardMedia
+          className={classes.cover}
+          image={song.album.images[0].url}
+          title={`${song.album.name} album cover`}
+        />
+      </Card>
+    );
+  });
 }

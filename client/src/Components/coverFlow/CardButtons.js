@@ -8,6 +8,8 @@ const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     justifyContent: "space-evenly",
+    position: "relative",
+    bottom: "40px",
   },
 }));
 

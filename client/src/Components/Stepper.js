@@ -17,9 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
-// import Player from "./Player";
-import { AlbumCarousel } from "./AlbumCarousel";
-import { Audio } from "./Audio";
+import Player from "./Player";
+import { CardButtons } from "./coverFlow/CardButtons";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -212,14 +211,12 @@ export default function CustomStepper() {
       <div className={classes.container}>
         {topArtists.map((artist) => {
           return (
-            <Container maxWidth="xs" key={artist.id}>
-              <TopArtistCard
-                key={artist.id}
-                image={artist.images[0].url}
-                name={artist.name}
-                id={artist.id}
-              />
-            </Container>
+            <TopArtistCard
+              key={artist.id}
+              image={artist.images[0].url}
+              name={artist.name}
+              id={artist.id}
+            />
           );
         })}
       </div>
@@ -230,35 +227,33 @@ export default function CustomStepper() {
     const [suggestedMusic, setSuggestedMusic] = useState([]);
     useEffect(() => {
       fetch(
-        "https://api.spotify.com/v1/recommendations?limit=16&seed_genres=rock",
+        "https://api.spotify.com/v1/recommendations?limit=100&seed_genres=rock",
         {
           headers: { Authorization: "Bearer " + accessToken },
         }
       )
         .then((response) => response.json())
-        .then((data) => setSuggestedMusic(data.tracks))
+        .then((data) => {
+          let availableMusic = [];
+          data.tracks.map((track) => {
+            if (track.preview_url) {
+              availableMusic.push(track);
+            }
+            setSuggestedMusic(availableMusic);
+          });
+          return availableMusic;
+        })
         .catch((error) => console.log(error));
     }, []);
 
     return (
-      <div className={classes.container}>
-        {/* {suggestedMusic.map((track) => {
-          return (
-            <div className={classes.container}>
-              <Container maxWidth="xs">
-                <Player
-                  albumCover={track.album.images[0].url}
-                  albumName={track.album.name}
-                  artist={track.artists[0].name}
-                  song={track.name}
-                />
-              </Container>
-            </div>
-          );
-        })} */}
-        {console.log(suggestedMusic)}
-        <AlbumCarousel suggestedMusic={suggestedMusic} />
-        <Audio suggestedMusic={suggestedMusic} />
+      <div>
+        <div className={classes.container}>
+          <Player suggestedMusic={suggestedMusic} />
+        </div>
+        <div>
+          <CardButtons />
+        </div>
       </div>
     );
   };
