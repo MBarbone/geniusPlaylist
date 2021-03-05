@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     marginTop: "50px",
     width: "450px",
-    height: "auto",
+    height: "226px",
   },
   details: {
     display: "flex",
@@ -41,10 +41,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Player({ suggestedMusic }) {
   const classes = useStyles();
   const theme = useTheme();
-  console.log("suggestedMusic", suggestedMusic);
 
   return suggestedMusic.map((song) => {
-    console.log(song);
     return (
       <Card className={classes.root}>
         <div className={classes.details}>

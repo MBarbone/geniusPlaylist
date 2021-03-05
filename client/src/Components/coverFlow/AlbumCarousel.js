@@ -1,6 +1,6 @@
 import React from "react";
 import Coverflow from "react-coverflow";
-import { CardButtons } from "./CardButtons";
+import { CardButtons } from "../CardButtons";
 import { Audio } from "./Audio";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";

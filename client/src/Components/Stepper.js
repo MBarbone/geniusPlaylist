@@ -17,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 
 import TopArtistCard from "./Card";
 import Player from "./Player";
+import { Card } from "@material-ui/core";
+import { CardButtons } from "./CardButtons";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -223,6 +225,7 @@ export default function CustomStepper() {
 
   const GetSuggestedMusic = () => {
     const [suggestedMusic, setSuggestedMusic] = useState([]);
+
     useEffect(() => {
       fetch(
         "https://api.spotify.com/v1/recommendations?limit=100&seed_genres=rock",
@@ -247,6 +250,7 @@ export default function CustomStepper() {
     return (
       <div className={classes.container} style={{ height: "350px" }}>
         <Player suggestedMusic={suggestedMusic} />
+        <CardButtons suggestedMusic={suggestedMusic} />
       </div>
     );
   };
