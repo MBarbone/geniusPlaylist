@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Favorite from "@material-ui/icons/Favorite";
@@ -15,26 +15,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const CardButtons = ({ suggestedMusic }) => {
+export const CardButtons = ({ suggestedMusic, setSuggestedMusic }) => {
   const classes = useStyles();
-  console.log(suggestedMusic, "start");
   let likedSongs = [];
   let dislikedSongs = [];
 
   const likedSong = () => {
-    const song = suggestedMusic.pop();
-    suggestedMusic.slice(0, suggestedMusic.length - 1);
+    const newMusic = [...suggestedMusic];
+    const song = newMusic.pop();
+    newMusic.slice(0, newMusic.length - 1);
 
     likedSongs.push(song);
-    console.log(likedSongs);
-    console.log(suggestedMusic);
+
+    setSuggestedMusic(newMusic);
   };
 
   const dislikedSong = () => {
-    const song = suggestedMusic[0];
+    const newMusic = [...suggestedMusic];
+    const song = newMusic.pop();
+    newMusic.slice(0, newMusic.length - 1);
 
     dislikedSongs.push(song);
-    console.log(dislikedSongs);
+
+    setSuggestedMusic(newMusic);
   };
 
   return (

@@ -250,7 +250,10 @@ export default function CustomStepper() {
     return (
       <div className={classes.container} style={{ height: "350px" }}>
         <Player suggestedMusic={suggestedMusic} />
-        <CardButtons suggestedMusic={suggestedMusic} />
+        <CardButtons
+          suggestedMusic={suggestedMusic}
+          setSuggestedMusic={setSuggestedMusic}
+        />
       </div>
     );
   };
