@@ -14,10 +14,11 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 
 import TopArtistCard from "./Card";
 import Player from "./Player";
+import { Card } from "@material-ui/core";
+import { CardButtons } from "./CardButtons";
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -172,6 +173,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexFlow: "row wrap",
     padding: "0 30px",
+    justifyContent: "center",
   },
 }));
 
@@ -209,14 +211,12 @@ export default function CustomStepper() {
       <div className={classes.container}>
         {topArtists.map((artist) => {
           return (
-            <Container maxWidth="xs" key={artist.id}>
-              <TopArtistCard
-                key={artist.id}
-                image={artist.images[0].url}
-                name={artist.name}
-                id={artist.id}
-              />
-            </Container>
+            <TopArtistCard
+              key={artist.id}
+              image={artist.images[0].url}
+              name={artist.name}
+              id={artist.id}
+            />
           );
         })}
       </div>
@@ -225,36 +225,35 @@ export default function CustomStepper() {
 
   const GetSuggestedMusic = () => {
     const [suggestedMusic, setSuggestedMusic] = useState([]);
-    console.log("made it here");
+
     useEffect(() => {
       fetch(
-        "https://api.spotify.com/v1/recommendations?limit=2&seed_genres=rock",
+        "https://api.spotify.com/v1/recommendations?limit=100&seed_genres=rock",
         {
           headers: { Authorization: "Bearer " + accessToken },
         }
       )
         .then((response) => response.json())
-        // .then((data) => console.log(data.tracks))
-        .then((data) => setSuggestedMusic(data.tracks))
+        .then((data) => {
+          let availableMusic = [];
+          data.tracks.map((track) => {
+            if (track.preview_url) {
+              availableMusic.push(track);
+            }
+            setSuggestedMusic(availableMusic);
+          });
+          return availableMusic;
+        })
         .catch((error) => console.log(error));
     }, []);
 
     return (
-      <div className={classes.container}>
-        {suggestedMusic.map((track) => {
-          return (
-            <div className={classes.container}>
-              <Container maxWidth="xs">
-                <Player
-                  albumCover={track.album.images[0].url}
-                  albumName={track.album.name}
-                  artist={track.artists[0].name}
-                  song={track.name}
-                />
-              </Container>
-            </div>
-          );
-        })}
+      <div className={classes.container} style={{ height: "350px" }}>
+        <Player suggestedMusic={suggestedMusic} />
+        <CardButtons
+          suggestedMusic={suggestedMusic}
+          setSuggestedMusic={setSuggestedMusic}
+        />
       </div>
     );
   };

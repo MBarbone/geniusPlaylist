@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 
-import { NavBar } from "./Components/Navbar";
+import { NavBar } from "./Components/header/Navbar";
 import CustomStepper from "./Components/Stepper";
 
 const App = () => {
