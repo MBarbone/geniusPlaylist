@@ -15,9 +15,8 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import TopArtistCard from "./Card";
+import TopArtistCard from "./TopArtistCard";
 import Player from "./Player";
-import { Card } from "@material-ui/core";
 import { CardButtons } from "./CardButtons";
 
 const useQontoStepIconStyles = makeStyles({

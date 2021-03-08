@@ -5,12 +5,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-import { CardButtons } from "./CardButtons";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     position: "absolute",
@@ -41,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Player({ suggestedMusic }) {
   const classes = useStyles();
-  const theme = useTheme();
+
+  console.log("suggested", suggestedMusic);
 
   return suggestedMusic.map((song) => {
     return (
@@ -56,22 +54,8 @@ export default function Player({ suggestedMusic }) {
             </Typography>
           </CardContent>
           <div className={classes.controls}>
-            <IconButton aria-label="previous">
-              {theme.direction === "rtl" ? (
-                <SkipNextIcon />
-              ) : (
-                <SkipPreviousIcon />
-              )}
-            </IconButton>
             <IconButton aria-label="play/pause">
               <PlayArrowIcon className={classes.playIcon} />
-            </IconButton>
-            <IconButton aria-label="next">
-              {theme.direction === "rtl" ? (
-                <SkipPreviousIcon />
-              ) : (
-                <SkipNextIcon />
-              )}
             </IconButton>
           </div>
         </div>
