@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import TopArtistCard from "./TopArtistCard";
-import Player from "./Player";
+import SuggestedCard from "./SuggestedCard";
 import { CardButtons } from "./CardButtons";
 
 const useQontoStepIconStyles = makeStyles({
@@ -248,7 +248,7 @@ export default function CustomStepper() {
 
     return (
       <div className={classes.container} style={{ height: "350px" }}>
-        <Player suggestedMusic={suggestedMusic} />
+        <SuggestedCard suggestedMusic={suggestedMusic} />
         <CardButtons
           suggestedMusic={suggestedMusic}
           setSuggestedMusic={setSuggestedMusic}

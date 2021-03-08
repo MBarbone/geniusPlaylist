@@ -1,0 +1,9 @@
+.rhap_additional-controls {
+  position: absolute !important;
+}
+
+.rhap_container {
+  box-shadow: none !important;
+  position: relative !important;
+  top: 0px !important;
+}

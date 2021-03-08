@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
+import { Player } from "./Player/Player";
+
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -26,20 +28,17 @@ const useStyles = makeStyles(() => ({
     width: "inherit",
     minHeight: "226px",
   },
-  controls: {
-    display: "flex",
-    alignSelf: "center",
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
+  playerContainer: {
+    position: "absolute",
+    bottom: "25px",
+    width: "230px",
   },
 }));
 
-export default function Player({ suggestedMusic }) {
+export default function SuggestedCard({ suggestedMusic }) {
   const classes = useStyles();
 
-  console.log("suggested", suggestedMusic);
+  console.log(suggestedMusic);
 
   return suggestedMusic.map((song) => {
     return (
@@ -53,10 +52,8 @@ export default function Player({ suggestedMusic }) {
               {song.artists[0].name}
             </Typography>
           </CardContent>
-          <div className={classes.controls}>
-            <IconButton aria-label="play/pause">
-              <PlayArrowIcon className={classes.playIcon} />
-            </IconButton>
+          <div className={classes.playerContainer}>
+            <Player previewUrl={song.preview_url} />
           </div>
         </div>
         <CardMedia
