@@ -33,6 +33,10 @@ const useStyles = makeStyles(() => ({
     bottom: "25px",
     width: "230px",
   },
+  songTitle: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  },
 }));
 
 export default function SuggestedCard({ suggestedMusic }) {
@@ -45,7 +49,11 @@ export default function SuggestedCard({ suggestedMusic }) {
       <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
+            <Typography
+              component="h5"
+              variant="h5"
+              className={classes.songTitle}
+            >
               {song.name}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
